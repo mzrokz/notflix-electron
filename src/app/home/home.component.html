@@ -1,7 +1,14 @@
 <div class="container">
   <h1 class="title">
-    {{ 'PAGES.HOME.TITLE' | translate }}
+    {{ "PAGES.HOME.TITLE" | translate }}
   </h1>
+  <input [(ngModel)]="searchText" />
+  <button (click)="search()">Search</button>
+  <a routerLink="/detail">{{ "PAGES.HOME.GO_TO_DETAIL" | translate }}</a>
 
-  <a routerLink="/detail">{{ 'PAGES.HOME.GO_TO_DETAIL' | translate }}</a>
+  <div *ngIf="searchResult && searchResult.length > 0">
+    <div *ngFor="let item of searchResult">
+      <span (click)="getItemDetails(item.href)">{{ item.name }}</span>
+    </div>
+  </div>
 </div>

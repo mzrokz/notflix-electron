@@ -7,3 +7,9 @@ interface Window {
   process: any;
   require: any;
 }
+
+// declare module 'cheerio' {
+//   interface Cheerio<T> {
+//     logHtml(this: Cheerio<T>): void;
+//   }
+// }
