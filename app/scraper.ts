@@ -1,10 +1,13 @@
 import * as cheerio from 'cheerio';
 import { ipcMain, ipcRenderer } from 'electron';
+import * as peerflix from 'peerflix';
 
 // const axios = require("axios");
 import axios from 'axios';
+import { ReadStream } from 'fs';
 
 export function registerEvents() {
+  console.log(peerflix);
   searchTorrent();
   getItemDetails();
 }
@@ -50,13 +53,22 @@ function getItemDetails() {
     if (response) {
       const $doc = cheerio.load(response.data);
       let magnetRows = $doc(
-        '.l7ba64c48e45408de7f2f09545551bcd906685ee3 .l3c3a46bf27bc83875e91b5e278abd644af6a3984'
+        '.box-info.torrent-detail-page .no-top-radius .clearfix li>a'
       );
       if (magnetRows.length > 0) {
         let magnetElement = magnetRows[0];
         let href = magnetElement.attributes.find((f) => f.name == 'href');
         if (href) {
           console.log(href.value);
+          let engine = peerflix(href.value, null);
+          engine.on('ready', function () {
+            engine.files.forEach(function (file) {
+              console.log('filename:', file.name);
+              var stream: ReadStream = file.createReadStream();
+              // stream is readable stream to containing the file content
+
+            });
+          });
         }
       }
     }
