@@ -66,7 +66,18 @@ function getItemDetails() {
               console.log('filename:', file.name);
               var stream: ReadStream = file.createReadStream();
               // stream is readable stream to containing the file content
+              stream.on('connected', (a, b, c) => {
+                console.log('stream connected');
+              });
 
+              stream.on('ready', (a, b, c) => {
+                console.log('stream connected');
+              });
+
+              stream.on('data', (buffer: Buffer) => {
+                console.log('stream data');
+                event.sender.send('torrentData', buffer);
+              });
             });
           });
         }
